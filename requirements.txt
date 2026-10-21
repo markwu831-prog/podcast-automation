@@ -1,0 +1,5 @@
+anthropic>=0.40.0
+requests>=2.31.0
+pydub>=0.25.1
+# Python 3.13 拿掉了內建 audioop，pydub 需要這個補上
+audioop-lts; python_version >= "3.13"

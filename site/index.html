@@ -1,0 +1,332 @@
+<title>晚安故事屋 每日集數</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* 單欄：最新一集放大在上，往期清單在下；夜空藍 + 月光金 */
+:root {
+  --bg: #EDF0F8;
+  --surface: #FFFFFF;
+  --ink: #1E2448;
+  --muted: #59608A;
+  --line: #D3D9EB;
+  --accent: #A8690F;
+  --accent-soft: #F7E9CC;
+  --ok: #2E7D5B;
+  --ok-soft: #DDF1E7;
+  --bad: #B23B3B;
+  --bad-soft: #F8E1E1;
+  --font-display: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "STKaiti", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11142A; --surface: #1A1F3D; --ink: #E7E9F6; --muted: #A1A7CB; --line: #2B3160;
+    --accent: #F1C36A; --accent-soft: #3A3420; --ok: #7CD3A8; --ok-soft: #1D3A30; --bad: #F09A9A; --bad-soft: #432228;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11142A; --surface: #1A1F3D; --ink: #E7E9F6; --muted: #A1A7CB; --line: #2B3160;
+  --accent: #F1C36A; --accent-soft: #3A3420; --ok: #7CD3A8; --ok-soft: #1D3A30; --bad: #F09A9A; --bad-soft: #432228;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+  display: grid;
+  gap: 28px;
+}
+header { display: flex; align-items: center; gap: 14px; }
+header svg { flex: none; }
+header h1 { font-family: var(--font-display); font-size: 30px; line-height: 1.2; margin: 0; font-weight: 700; }
+header p { margin: 0; color: var(--muted); font-size: 13px; }
+
+.label { font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+
+.latest {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+}
+.latest h2 { font-family: var(--font-display); font-size: 28px; line-height: 1.3; margin: 0; text-wrap: balance; }
+.latest .sub { margin: 4px 0 0; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+.chip.theme { background: var(--accent-soft); color: var(--ink); }
+.chip.pending { background: var(--accent-soft); color: var(--accent); }
+.chip.done { background: var(--ok-soft); color: var(--ok); }
+.chip.failed { background: var(--bad-soft); color: var(--bad); }
+audio { width: 100%; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+button {
+  font: inherit; font-size: 14px; cursor: pointer;
+  border-radius: 8px; padding: 8px 14px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+}
+button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+button:hover { border-color: var(--muted); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .55; cursor: default; }
+.block { display: grid; gap: 6px; min-width: 0; }
+.block-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.block-head button { padding: 4px 10px; font-size: 13px; }
+.text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.error { color: var(--bad); }
+.status { min-height: 1.2em; font-size: 13px; color: var(--muted); margin: 0; }
+
+.past h3 { font-family: var(--font-display); font-size: 20px; margin: 0 0 8px; font-weight: 700; }
+.past ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.past li { border-bottom: 1px solid var(--line); }
+.past details summary {
+  list-style: none; cursor: pointer; padding: 12px 0;
+  display: grid; grid-template-columns: 96px 1fr auto; gap: 12px; align-items: center;
+}
+.past details summary::-webkit-details-marker { display: none; }
+.past .d { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+.past .t { min-width: 0; overflow-wrap: anywhere; }
+.past .body { padding: 0 0 16px; display: grid; gap: 12px; }
+
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: 14px; padding: 28px 24px; display: grid; gap: 6px; }
+.empty h2 { font-family: var(--font-display); margin: 0; font-size: 22px; }
+.empty p { margin: 0; color: var(--muted); }
+
+@media (max-width: 480px) {
+  .latest { padding: 18px; }
+  .latest h2 { font-size: 24px; }
+  .past details summary { grid-template-columns: 1fr auto; }
+  .past .d { grid-column: 1 / -1; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+      <circle cx="22" cy="22" r="21" fill="var(--surface)" stroke="var(--line)"/>
+      <path d="M27 11a12 12 0 1 0 6 18A10 10 0 0 1 27 11z" fill="var(--accent)"/>
+      <circle cx="13" cy="14" r="1.4" fill="var(--accent)"/>
+      <circle cx="33" cy="33" r="1" fill="var(--accent)"/>
+    </svg>
+    <div>
+      <h1>晚安故事屋</h1>
+      <p>每天早上 6 點（台灣時間）自動產生一集，做好後在這裡試聽、下載、上傳 Firstory</p>
+    </div>
+  </header>
+
+  <main id="latest">
+    <section class="empty">
+      <h2>正在讀取集數…</h2>
+      <p>第一集做好之後會出現在這裡。</p>
+    </section>
+  </main>
+
+  <section class="past" id="past" hidden>
+    <h3>往期集數</h3>
+    <ul id="past-list"></ul>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function () {
+  const latestEl = document.getElementById("latest");
+  const pastEl = document.getElementById("past");
+  const pastList = document.getElementById("past-list");
+  const WEEK = ["日", "一", "二", "三", "四", "五", "六"];
+  let db = null;
+  let downloads = null;
+
+  function el(tag, attrs, ...children) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === "class") node.className = v;
+      else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+      else if (v !== false && v != null) node.setAttribute(k, v === true ? "" : v);
+    }
+    for (const c of children.flat()) {
+      if (c == null || c === false) continue;
+      node.append(c instanceof Node ? c : document.createTextNode(String(c)));
+    }
+    return node;
+  }
+
+  function fmtDate(iso) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const wd = WEEK[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+    return `${y} 年 ${m} 月 ${d} 日（${wd}）`;
+  }
+  function fmtDuration(sec) {
+    if (!sec) return null;
+    const m = Math.floor(sec / 60), s = Math.round(sec % 60);
+    return `${m} 分 ${String(s).padStart(2, "0")} 秒`;
+  }
+
+  function statusChip(ep) {
+    if (ep.status === "failed") return el("span", { class: "chip failed" }, "產生失敗");
+    return ep.uploaded
+      ? el("span", { class: "chip done" }, "已上傳 Firstory")
+      : el("span", { class: "chip pending" }, "待上傳");
+  }
+
+  async function copyText(text, btn) {
+    const original = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = "已複製";
+    } catch (e) {
+      const sel = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(btn.closest(".block").querySelector(".text"));
+      sel.removeAllRanges();
+      sel.addRange(range);
+      btn.textContent = "已選取，請按複製";
+    }
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }
+
+  function textBlock(label, text, extraClass) {
+    const btn = el("button", { type: "button" }, "複製");
+    btn.addEventListener("click", () => copyText(text, btn));
+    return el("div", { class: "block" },
+      el("div", { class: "block-head" }, el("span", { class: "label" }, label), btn),
+      el("p", { class: "text " + (extraClass || "") }, text));
+  }
+
+  function notesFile(ep) {
+    return [
+      `集數標題：${ep.episode_title || ""}`,
+      `故事：${ep.story_title || ""}`,
+      `日期：${ep.date}`,
+      "",
+      "節目簡介：",
+      ep.show_notes || "",
+      "",
+      "封面 prompt：",
+      ep.cover_prompt || "",
+    ].join("\n");
+  }
+
+  async function download(ep, btn, statusEl) {
+    if (!downloads || !window.JSZip) {
+      statusEl.textContent = "這個檢視方式不能下載檔案，請在 claude.ai 開啟這個頁面。";
+      return;
+    }
+    btn.disabled = true;
+    statusEl.textContent = "準備檔案中…";
+    try {
+      const resp = await fetch(ep.audio_path);
+      if (!resp.ok) throw new Error(`找不到音檔（${resp.status}）`);
+      const zip = new JSZip();
+      zip.file(`${ep.date}.mp3`, await resp.arrayBuffer());
+      zip.file(`${ep.date}_標題簡介.txt`, notesFile(ep));
+      const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
+      await downloads.save({ filename: `晚安故事屋_${ep.date}.zip`, data: blob });
+      statusEl.textContent = "已下載：壓縮檔裡有 mp3 跟標題簡介文字檔。";
+    } catch (e) {
+      if (e && e.code === "declined") statusEl.textContent = "已取消下載。";
+      else if (e && e.code === "rate_limited") statusEl.textContent = "已經有一個下載視窗開著，請先處理那一個。";
+      else statusEl.textContent = `下載失敗：${(e && e.message) || e}`;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function toggleUploaded(ep, btn, statusEl) {
+    if (!db) return;
+    btn.disabled = true;
+    try {
+      await db.collection("episodes").doc(ep.date).update({ uploaded: !ep.uploaded });
+    } catch (e) {
+      statusEl.textContent = e && e.code === "permission_denied"
+        ? "你沒有修改權限，請請擁有者標記。"
+        : `更新失敗：${(e && e.message) || e}`;
+      btn.disabled = false;
+    }
+  }
+
+  function episodeBody(ep) {
+    if (ep.status === "failed") {
+      return [el("p", { class: "text error" }, ep.error || "這次排程沒有成功產生音檔。")];
+    }
+    const statusEl = el("p", { class: "status", role: "status" });
+    const dlBtn = el("button", { type: "button", class: "primary" }, "下載 mp3 與簡介");
+    dlBtn.addEventListener("click", () => download(ep, dlBtn, statusEl));
+    const upBtn = el("button", { type: "button" }, ep.uploaded ? "改回待上傳" : "標記已上傳 Firstory");
+    upBtn.addEventListener("click", () => toggleUploaded(ep, upBtn, statusEl));
+    if (!db) upBtn.hidden = true;
+    return [
+      ep.audio_path ? el("audio", { controls: true, preload: "metadata", src: ep.audio_path }) : null,
+      el("div", { class: "actions" }, dlBtn, upBtn),
+      statusEl,
+      ep.show_notes ? textBlock("節目簡介", ep.show_notes) : null,
+      ep.cover_prompt ? textBlock("封面 prompt", ep.cover_prompt, "prompt") : null,
+    ];
+  }
+
+  function metaRow(ep) {
+    return el("div", { class: "meta" },
+      el("span", null, fmtDate(ep.date)),
+      ep.theme ? el("span", { class: "chip theme" }, ep.theme) : null,
+      statusChip(ep),
+      fmtDuration(ep.duration_sec) ? el("span", null, fmtDuration(ep.duration_sec)) : null,
+      ep.char_count ? el("span", null, `${ep.char_count} 字`) : null);
+  }
+
+  function renderEmpty(title, text) {
+    latestEl.replaceChildren(el("section", { class: "empty" }, el("h2", null, title), el("p", null, text)));
+    pastEl.hidden = true;
+  }
+
+  function render(episodes) {
+    if (!episodes.length) {
+      renderEmpty("還沒有集數", "每天早上 6 點（台灣時間）會自動產生一集，做好後會出現在這裡。");
+      return;
+    }
+    const [latest, ...past] = episodes;
+    latestEl.replaceChildren(el("section", { class: "latest" },
+      el("div", null,
+        el("div", { class: "label" }, "最新一集"),
+        el("h2", null, latest.episode_title || latest.story_title || latest.date),
+        latest.episode_title && latest.story_title
+          ? el("p", { class: "sub" }, `故事：${latest.story_title}`) : null),
+      metaRow(latest),
+      ...episodeBody(latest)));
+
+    pastEl.hidden = past.length === 0;
+    pastList.replaceChildren(...past.map((ep) => el("li", null,
+      el("details", null,
+        el("summary", null,
+          el("span", { class: "d" }, ep.date),
+          el("span", { class: "t" }, ep.episode_title || ep.story_title || "（無標題）"),
+          statusChip(ep)),
+        el("div", { class: "body" }, metaRow(ep), ...episodeBody(ep))))));
+  }
+
+  claude.use("downloads").then((d) => { downloads = d; });
+  claude.use("db").then((store) => {
+    db = store;
+    if (!db) {
+      renderEmpty("無法讀取集數", "請登入 claude.ai 後再開啟這個頁面。");
+      return;
+    }
+    db.collection("episodes").orderBy("date", "desc").limit(60).onSnapshot(
+      (snap) => render(snap.docs.map((d) => d.data()).filter(Boolean)),
+      (e) => renderEmpty("讀取集數失敗", (e && e.message) || "請重新整理頁面再試一次。"));
+  });
+})();
+</script>

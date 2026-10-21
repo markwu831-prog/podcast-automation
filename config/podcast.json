@@ -1,0 +1,40 @@
+{
+  "show": {
+    "name": "晚安故事屋",
+    "language": "zh-TW",
+    "target_duration_minutes": 5,
+    "target_word_count": [1500, 1700]
+  },
+  "characters": {
+    "narrator": {
+      "label": "女",
+      "role": "溫柔親切的說故事姐姐，主講故事內容",
+      "elevenlabs_voice_id": "EXAVITQu4vr4xnSDxMaL"
+    },
+    "listener": {
+      "label": "男",
+      "role": "5歲男孩，天真活潑，會在故事中適時提問、驚訝、回應",
+      "elevenlabs_voice_id": "cgSgspJ2msm6clMCkdW9"
+    }
+  },
+  "story_direction": {
+    "mode": "free",
+    "tone": "溫馨、教育寓意明確、適合睡前聽",
+    "avoid": [
+      "恐怖", "暴力", "悲傷結局", "複雜政治或宗教內容"
+    ],
+    "notes": "純原創故事，不取材自任何特定出版品；主題自由發揮"
+  },
+  "tts": {
+    "provider": "elevenlabs",
+    "model_id": "eleven_multilingual_v2",
+    "output_format": "mp3_44100_128"
+  },
+  "assembly": {
+    "intro_music_path": "assets/intro.mp3",
+    "outro_music_path": "assets/outro.mp3",
+    "background_music_path": "assets/bg_loop.mp3",
+    "background_music_volume_db": -22,
+    "crossfade_ms": 800
+  }
+}

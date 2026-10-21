@@ -1,0 +1,4 @@
+output/audio/
+output/episodes/*.mp3
+__pycache__/
+.env
