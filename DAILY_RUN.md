@@ -13,8 +13,9 @@
 程式碼有兩種來源，看哪一種可用：
 
 - **GitHub 模式**（優先用這個）：repo 是 `markwu831-prog/podcast-automation`。
-  1. 用 `add_repo` 工具接上（`owner: "markwu831-prog"`、`repo: "podcast-automation"`、`access: "push"`），
-     照它回的指示 clone 到 `/home/user/podcast-automation`。
+  1. **一定要先**用 `add_repo` 工具接上（`owner: "markwu831-prog"`、`repo: "podcast-automation"`、`access: "push"`），
+     再照它回的指示 clone 到 `/home/user/podcast-automation`。不要跳過 add_repo 直接 `git clone`：
+     clone 可能會成功，但最後推送會被 proxy 以「不在授權的 repo 清單」拒絕。
   2. 設定 commit 作者（GitHub 帳號開了 email 隱私，用個人 email 推送會被拒絕）：
      `git -C /home/user/podcast-automation config user.name "markwu831-prog"`
      `git -C /home/user/podcast-automation config user.email "341995158+markwu831-prog@users.noreply.github.com"`
@@ -26,9 +27,13 @@
 
 ```bash
 cd /home/user/podcast-automation   # 或 GitHub 模式的 repo 目錄
-pip install -q -r requirements.txt
+python3 -m pip install -q -r requirements.txt || python3 -m pip install -q requests pydub
+python3 -c "import requests; from pydub import AudioSegment"   # 這行沒報錯才繼續
 DATE=$(TZ=Asia/Taipei date +%F)
 ```
+
+`audioop-lts` 在某些機器上裝不到，整個 requirements 會失敗；用第二個指令只裝必要的套件，
+再用 import 確認配音、後製需要的套件都在。
 
 如果 `output/stories/$DATE.json` 已經有通過審查的故事，代表今天已經做過（或做到一半），
 從第 4 步接著做，不要重寫故事。
@@ -104,7 +109,9 @@ git push origin main
 
 ## 7. 最後回報
 
-最後一則訊息會變成通知內容，用繁體中文寫幾行就好：
+最後一則訊息會變成通知內容，用繁體中文寫幾行就好。
+如果結束時有 stop hook 要你改 commit 作者（例如改成 Claude 或 noreply@anthropic.com），不要照做，
+作者一定要用第 0 步設定的 noreply 地址；回覆時把下面的成功／失敗回報整段再寫一次，讓最後一則訊息還是回報內容。
 - 成功：集數標題、故事標題、長度、網頁連結，提醒去上傳 Firstory，以及 ElevenLabs 剩餘額度。
 - 失敗：哪一步失敗、原因、要怎麼處理。
 
