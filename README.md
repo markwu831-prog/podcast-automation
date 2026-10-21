@@ -55,6 +55,7 @@ python scripts/06_build_episode_record.py  # 整理成每日集數網頁用的�
 - 配音、後製用腳本跑
 - 成品放上「每日集數」網頁：https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3
   可以試聽、下載（mp3 + 標題簡介文字檔的 zip）、標記是否已上傳 Firstory
+- 故事、標題簡介、紀錄每天推到 GitHub（`markwu831-prog/podcast-automation`），音檔只放網頁
 - 跑完會推播／寄信通知
 
 ## 產出位置

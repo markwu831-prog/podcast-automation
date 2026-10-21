@@ -12,8 +12,13 @@
 
 程式碼有兩種來源，看哪一種可用：
 
-- **GitHub 模式**：工作目錄裡已經有這個專案的 repo（或可以用 add_repo 接上並 clone），就用它。
-- **網頁模式**（還沒接 GitHub 時）：程式碼和歷史故事都存在每日集數網頁的 `src/` 底下。
+- **GitHub 模式**（優先用這個）：repo 是 `markwu831-prog/podcast-automation`。
+  1. 用 `add_repo` 工具接上（`owner: "markwu831-prog"`、`repo: "podcast-automation"`、`access: "push"`），
+     照它回的指示 clone 到 `/home/user/podcast-automation`。
+  2. 設定 commit 作者（GitHub 帳號開了 email 隱私，用個人 email 推送會被拒絕）：
+     `git -C /home/user/podcast-automation config user.name "markwu831-prog"`
+     `git -C /home/user/podcast-automation config user.email "341995158+markwu831-prog@users.noreply.github.com"`
+- **網頁模式**（GitHub 接不上時的備案）：程式碼和歷史故事都存在每日集數網頁的 `src/` 底下。
   1. `Artifact` 工具 `action: "list"`、`url` 設成網頁網址、`scope: "files"`，列出所有 `src/` 開頭的檔案。
   2. `Artifact` 工具 `action: "read"`、同一個 `url`、`paths` 填全部 `src/` 檔案（一次最多 256 個）。
   3. 讀回來的檔案會存在結果寫的資料夾裡，把它底下的 `src/` 內容複製到 `/home/user/podcast-automation/`
@@ -76,7 +81,7 @@ ElevenLabs 額度不足會直接停止：照「失敗時」處理。
 1. `Artifact` 工具 `action: "read"`、`url` 設成上面的網頁網址（發布前一定要先讀）。
 2. `Artifact` 工具發布：`url` 設成網頁網址，`file_path` 是 `site/index.html`，
    `files` 包含 `{"episodes/<DATE>.mp3": "output/episodes/<DATE>.mp3"}`。不要傳 `capabilities`。
-   網頁模式要在同一次發布的 `files` 裡再加上 `python3 scripts/source_manifest.py` 輸出的全部項目，
+   網頁模式（GitHub 模式不用）要在同一次發布的 `files` 裡再加上 `python3 scripts/source_manifest.py` 輸出的全部項目，
    把程式碼和今天的故事、標題簡介、紀錄存回網頁的 `src/`（這就是網頁模式的「存檔」）。
 3. 網頁最多保留最近 30 集的音檔：用 `Artifact` `action: "list"`、`scope: "files"` 看現有的
    `episodes/*.mp3`，超過 30 個就在同一次發布的 `files` 裡把最舊的設成 `null`。
