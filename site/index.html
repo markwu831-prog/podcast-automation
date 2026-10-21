@@ -124,7 +124,7 @@ button:disabled { opacity: .55; cursor: default; }
     </svg>
     <div>
       <h1>晚安故事屋</h1>
-      <p>每天早上 6 點（台灣時間）自動產生一集，做好後在這裡試聽、下載、上傳 Firstory</p>
+      <p>每天早上 6 點（台灣時間）自動產生一集。上傳 Firstory 要自己手動做，上傳完再回來打勾記錄</p>
     </div>
   </header>
 
@@ -180,7 +180,7 @@ button:disabled { opacity: .55; cursor: default; }
     if (ep.status === "failed") return el("span", { class: "chip failed" }, "產生失敗");
     return ep.uploaded
       ? el("span", { class: "chip done" }, "已上傳 Firstory")
-      : el("span", { class: "chip pending" }, "待上傳");
+      : el("span", { class: "chip pending" }, "尚未上傳 Firstory");
   }
 
   async function copyText(text, btn) {
@@ -266,7 +266,7 @@ button:disabled { opacity: .55; cursor: default; }
     const statusEl = el("p", { class: "status", role: "status" });
     const dlBtn = el("button", { type: "button", class: "primary" }, "下載 mp3 與簡介");
     dlBtn.addEventListener("click", () => download(ep, dlBtn, statusEl));
-    const upBtn = el("button", { type: "button" }, ep.uploaded ? "改回待上傳" : "標記已上傳 Firstory");
+    const upBtn = el("button", { type: "button" }, ep.uploaded ? "改回尚未上傳" : "我已上傳到 Firstory，打勾記錄");
     upBtn.addEventListener("click", () => toggleUploaded(ep, upBtn, statusEl));
     if (!db) upBtn.hidden = true;
     return [
