@@ -89,7 +89,7 @@ python scripts/06_build_episode_record.py  # 整理成每日集數網頁用的�
 
 ## 待辦（之後要補的部分）
 
-- [ ] 03_generate_audio.py 加上 Azure TTS 版本
+- [x] 03_generate_audio.py 加上 Azure TTS 版本（`tts.provider` 設成 `azure`，需要 AZURE_SPEECH_KEY）
 - [ ] 片頭/片尾/背景音樂（第 1 集是用瀏覽器程式即時合成的，04 腳本需要 mp3 素材）
 
 - [ ] 封面圖目前只產生文字 prompt，還沒接圖像生成 API，需要你決定要用哪個服務
