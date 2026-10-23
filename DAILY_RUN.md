@@ -11,9 +11,11 @@
 
 ## 0. 取得程式碼、準備
 
-程式碼有兩種來源，看哪一種可用：
+程式碼有三種來源，看哪一種可用：
 
-- **GitHub 模式**（優先用這個）：repo 是 `markwu831-prog/podcast-automation`。
+- **本機模式**（在 MacBook Air 上跑時用這個）：已經在 repo 目錄裡，先 `git pull origin main` 同步，
+  不需要 add_repo，也不需要網頁備份；第 5 步不用加 `source_manifest.py` 的項目，第 6 步照 GitHub 模式存檔。
+- **GitHub 模式**（雲端對話用這個）：repo 是 `markwu831-prog/podcast-automation`。
   1. **一定要先**用 `add_repo` 工具接上（`owner: "markwu831-prog"`、`repo: "podcast-automation"`、`access: "push"`），
      再照它回的指示 clone 到 `/home/user/podcast-automation`。不要跳過 add_repo 直接 `git clone`：
      clone 可能會成功，但最後推送會被 proxy 以「不在授權的 repo 清單」拒絕。
