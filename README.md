@@ -53,8 +53,11 @@ python scripts/06_build_episode_record.py  # 整理成每日集數網頁用的�
 每天台灣時間早上 6 點，Claude 雲端排程會開一個新對話，照 `DAILY_RUN.md` 做出當天的一集：
 - 故事、內容審查（獨立的子代理）、標題簡介由排程裡的 Claude 直接寫，不需要 ANTHROPIC_API_KEY
 - 配音、後製用腳本跑
-- 成品放上「每日集數」網頁：https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3
+- 成品放上「每日集數」網頁（私人後台，只有自己能開）：https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3
   可以試聽、下載（mp3 + 標題簡介文字檔的 zip）、標記是否已上傳 Firstory
+- 同時更新「公開收聽頁」：https://claude.ai/artifact/TuvMhFUZ5MmngCpn1dPm5S
+  不用登入就能聽、看簡介，給家人朋友分享用（要在頁面的 Share 選單設成「知道連結的任何人」）。
+  後台用了需要登入的資料庫與下載功能，所以公開分享要用這一頁
 - 故事、標題簡介、紀錄每天推到 GitHub（`markwu831-prog/podcast-automation`），音檔只放網頁
 - 跑完會推播／寄信通知
 

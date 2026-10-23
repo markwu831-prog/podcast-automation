@@ -4,7 +4,8 @@
 故事、內容審查、標題簡介由你（Claude）直接寫，不呼叫 Anthropic API；
 配音、後製用腳本跑。
 
-- 每日集數網頁：https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3
+- 每日集數網頁（私人後台）：https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3
+- 公開收聽頁（不用登入）：https://claude.ai/artifact/TuvMhFUZ5MmngCpn1dPm5S
 - 日期一律用台灣時間：`DATE=$(TZ=Asia/Taipei date +%F)`
 - 任何一步失敗，跳到「失敗時」那一節，不要硬做或編造結果。
 
@@ -95,6 +96,20 @@ ElevenLabs 額度不足會直接停止：照「失敗時」處理。
    `file_path: output/episodes/<DATE>_record.json`。已經有同一天的紀錄就先 `get` 拿 `version`，
    用 `set` 加 `if_version` 覆寫。
 
+## 5b. 更新公開收聽頁
+
+公開頁不用登入，集數資料是跟頁面一起發布的 `episodes.json`。
+
+1. `python3 scripts/build_episodes_index.py`（產生 `output/episodes/index.json`）。
+   確認輸出的集數包含之前每一集；少了就是之前的 `*_record.json` 沒還原到，先補齊再做。
+2. `Artifact` 工具 `action: "read"`、`url` 設成公開收聽頁網址（發布前一定要先讀）。
+3. `Artifact` 工具發布：`url` 設成公開收聽頁網址，`file_path` 是 `site/public.html`，`files`：
+   - `"episodes.json"`: `{"from": "output/episodes/index.json", "contentType": "application/json"}`
+   - `"episodes/<DATE>.mp3"`: `{"artifact": "https://claude.ai/artifact/7VMwvNXEp1Z63wJQ4q1aT3", "path": "episodes/<DATE>.mp3"}`
+     （從私人後台伺服器端複製，不用重新上傳）
+   - 超過 30 集時，把不在 `index.json` 裡的舊 `episodes/*.mp3` 設成 `null`。
+   不要傳 `capabilities`，公開頁不能用任何需要登入的功能。
+
 ## 6. 存檔
 
 網頁模式：第 5 步發布時已經存回 `src/`，這步略過。
@@ -102,7 +117,7 @@ ElevenLabs 額度不足會直接停止：照「失敗時」處理。
 GitHub 模式：把故事、標題簡介、紀錄 commit 並推到 main（音檔不進 git，`.gitignore` 已經排除）：
 
 ```bash
-git add output/stories/$DATE.json output/episodes/${DATE}_metadata.json output/episodes/${DATE}_record.json
+git add output/stories/$DATE.json output/episodes/${DATE}_metadata.json output/episodes/${DATE}_record.json output/episodes/index.json
 git commit -m "feat: add episode $DATE"
 git push origin main
 ```
